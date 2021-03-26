@@ -23,14 +23,37 @@ class SemesterYear extends CI_Controller {
     	is_logged_in();
       	$this->load->model('University_model');
 		$this->load->library('form_validation');
+		$this->load->model('UniCourse_model');
+		$this->load->model('SemYear_model');
    	}
 
 
 	public function manage($course_id)
 	{	
- 
-		// $data['all'] = $this->SemesterYear_model->all();
-		$this->load->view('uni_course/semester_year');
+ 		
+ 		$data['course_data'] = $this->UniCourse_model->find($course_id);
+ 		$data['sem_year'] = $this->SemYear_model->findByCourse($course_id);
+ 		// print_r($data); exit;
+ 		if($this->input->post('save')) {
+			
+			$this->form_validation->set_rules('course', 'Course', 'trim|required');	   	   	
+	   	   	if ($this->form_validation->run() == FALSE){
+		      	$this->load->view('uni_course/semester_year', $data);
+	      	} else {
+	         	$course = $this->input->post('course');
+	         	$fees = $this->input->post('fee');
+	         	$result = $this->SemYear_model->deleteAndCeate($course, $fees);
+				if($result == false){
+					$this->session->set_flashdata('error_msg','Not added, Please try again');
+	      		} else {
+	      		 	$this->session->set_flashdata('success_msg','Added successfully');
+	      		}
+	      		redirect('semesteryear/manage/'. $course);
+	      	}
+     	} else {
+     		// $data['all'] = $this->SemesterYear_model->all();
+			$this->load->view('uni_course/semester_year', $data);
+     	}		
 	}
 
 	

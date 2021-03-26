@@ -7,9 +7,9 @@ class UniCourse_model extends CI_Model {
         parent::__construct();
     }
 
-	public function create($university, $course_code, $course_name, $type) 
+	public function create($university, $course_code, $course_name, $type, $total) 
     {
-   		$data = array('university_id'=> $university,'course_code'=> $course_code, 'course_name'=> $course_name, 'type'=> $type);
+   		$data = array('university_id'=> $university,'course_code'=> $course_code, 'course_name'=> $course_name, 'type'=> $type, 'total'=> $total);
 		$this->db->insert('university_course', $data);
 		//echo $this->db->last_query(); 
 		if($this->db->trans_status()==true){
@@ -20,9 +20,9 @@ class UniCourse_model extends CI_Model {
 	}
 
 
- 	public function update($id, $university, $course_code, $course_name, $type) 
+ 	public function update($id, $university, $course_code, $course_name, $type, $total) 
     {
-   		$data = array('university_id'=> $university,'course_code'=> $course_code, 'course_name'=> $course_name, 'type'=> $type);
+   		$data = array('university_id'=> $university,'course_code'=> $course_code, 'course_name'=> $course_name, 'type'=> $type, 'total'=> $total);
 		$this->db->where('id', $id);
 		$this->db->update('university_course', $data);
 			
@@ -53,7 +53,12 @@ class UniCourse_model extends CI_Model {
 	public function find($cid)
 	{
 		$result=array();
-		$query = $this->db->get_where('university_course', array('id' => $cid));
+		$this->db->select('university_course.*, university.name AS uni_name');
+		$this->db->from('university_course');
+		$this->db->join('university', 'university.id = university_course.university_id');
+		$this->db->where('university_course.id', $cid);
+		$query = $this->db->get();
+		// $query = $this->db->get_where('university_course', array('id' => $cid));
 		foreach ($query->result_array() as $row){
        		return $row;
 		}

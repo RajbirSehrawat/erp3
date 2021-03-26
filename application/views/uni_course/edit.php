@@ -68,7 +68,17 @@
                                             
                                         </div>
                                         
-                                          
+                                        <div class="form-group">
+                                           <label>Total (Year/Semester)</label>
+                                           <select class="form-control" name="total">
+                                            <?php for($i=1; $i<=10; $i++) { ?>
+                                        <option value="<?php echo $i; ?>" <?php if($course_data['total'] == $i) {echo 'selected';}?>>
+                                                  <?php echo $i; ?>  
+                                                </option>
+                                           <?php } ?>
+                                           </select>
+                                            
+                                        </div>
                                         
                                         <button type="submit" class="btn btn-default" name="edit_course" value="change password">Update Course</button>
                                         <button type="reset" class="btn btn-default">Reset Button</button>

@@ -30,6 +30,7 @@
                                         <th>Course Name</th>
                                         <th>Course Code</th>
                                         <th>Type</th>
+                                        <th>Total(Sem/Year)</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -40,7 +41,8 @@
                                         <td><?php echo $cdata['university_name'];?></td>
                                         <td><?php echo $cdata['course_name'];?></td>
                                         <td><?php echo $cdata['course_code'];?></td>
-                                         <td><?php echo $cdata['type'];?></td>
+                                        <td><?php echo $cdata['type'];?></td>
+                                         <td><?php echo $cdata['total']." ".$cdata['type'];?></td>
                                         <td class="center">
 											<a href="<?php echo base_url();?>universitycourse/edit/<?php echo $cdata['id'];?>" class="label label-success label-sm">Edit</a> &nbsp;
 											<a href="#" class="label label-danger label-sm">Delete</a>
