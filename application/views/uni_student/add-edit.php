@@ -2,6 +2,12 @@
 $this->load->view('common/header');
 $this->load->view('common/leftmenu');
 ?>
+<style>
+    .mb-1{
+        margin-bottom: 1rem !important;
+        padding: 2px 9px;
+    }
+</style>
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
@@ -13,6 +19,7 @@ $this->load->view('common/leftmenu');
             <div class="panel panel-default">
                 <div class="panel-heading">
                     New Student
+                    <a href="<?php echo base_url(); ?>unistudents" class="btn btn-sm btn-primary pull-right mb-1">List Student</a>
                 </div>
                 <div class="col-md-8"> <br />
                     <?php if ($this->session->flashdata('success_msg')) { ?>
