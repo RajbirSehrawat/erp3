@@ -27,25 +27,14 @@ class UniCourse_model extends CI_Model {
 		$this->db->where('id', $id);
 		$this->db->update('university_course', $data);
 			
-		if($this->db->trans_status()==true){
+		if($this->db->trans_status()==true) {
 			return true;
 		}
 		
 		return false;
 	}
 
-	public function update($id, $university, $course_code, $course_name, $type)
-	{
-		$data = array('university_id' => $university, 'course_code' => $course_code, 'course_name' => $course_name, 'type' => $type);
-		$this->db->where('id', $id);
-		$this->db->update('university_course', $data);
-
-		if ($this->db->trans_status() == true) {
-			return true;
-		}
-
-		return false;
-	}
+	
 
 	public function all()
 	{
@@ -88,7 +77,8 @@ class UniCourse_model extends CI_Model {
 			return true;	 
 		} else {
 			return false;        		
-		}    
+		} 
+	}  
 
 	public function findByUniversity($id)
 	{
@@ -99,19 +89,7 @@ class UniCourse_model extends CI_Model {
 	}
 
 
-	public function chk_name($id, $name)
-	{
-		$this->db->where('id!=', $id);
-		$this->db->where('course_name', $name);
-		$query = $this->db->get('university_course');
-		// echo $this->db->last_query(); exit; 
-		if ($query->num_rows() == 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
+	
 	public function chk_code($id, $code)
 	{
 
