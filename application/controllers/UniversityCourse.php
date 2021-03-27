@@ -53,6 +53,7 @@ class UniversityCourse extends CI_Controller {
 	         	$type =  $this->input->post('type');
 	         	$total =  $this->input->post('total');
 	         	$result = $this->UniCourse_model->create($university, $ccode, $cname, $type, $total);
+
 				if($result == false){
 					$this->session->set_flashdata('error_msg','Course not added, Please try again');
 	      		} else {
@@ -73,6 +74,7 @@ class UniversityCourse extends CI_Controller {
 			$this->form_validation->set_rules('university', 'University', 'trim|required|is_natural_no_zero');
 			$this->form_validation->set_rules('type', 'Course Type', 'trim|required');
 			$this->form_validation->set_rules('total', 'Total Sem/Year', 'trim|required|is_natural_no_zero');
+
 			$course_id = $this->input->post('course_id');
    	   		if ($this->form_validation->run() == FALSE){
 		      	$data['course_data'] = $this->UniCourse_model->find($course_id);
@@ -84,6 +86,7 @@ class UniversityCourse extends CI_Controller {
 	         	$type =  $this->input->post('type');
 	         	$total =  $this->input->post('total');
 	         	$result = $this->UniCourse_model->update($course_id, $university, $ccode, $cname, $type, $total);
+
 				if($result == false){
 					$this->session->set_flashdata('error_msg','Course not updated, Please try again');
 	      		} else {

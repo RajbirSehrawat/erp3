@@ -79,6 +79,7 @@
                                            </select>
                                             
                                         </div>
+
                                         
                                         <button type="submit" class="btn btn-default" name="edit_course" value="change password">Update Course</button>
                                         <button type="reset" class="btn btn-default">Reset Button</button>

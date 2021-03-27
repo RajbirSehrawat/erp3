@@ -16,9 +16,11 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             University Course Sem/Years
+
                             <span style="float: right; font-weight: bold;">
                              <a href="<?php echo base_url();?>universitycourse">Back To Courses</a>
                             </span>
+
                         </div>
              <div class="col-md-8"> <br/>          
            <?php if($this->session->flashdata('success_msg')) { ?>
@@ -30,6 +32,7 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-12">
+
                                     <?php if(validation_errors()) { ?>
                                         <div class="alert alert-danger">
                                             <?php echo validation_errors(); ?>
@@ -88,6 +91,7 @@
                                         
                                        <div class="col-md-12">   
                                             <button type="submit" class="btn btn-lg btn-success" name="save" value="save"> Save </button>
+
                                         </div>
                                     </form>
                                 </div>
@@ -105,7 +109,7 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-             
+
         </div>
         <!-- /#page-wrapper -->
  <?php $this->load->view('common/footer');?>

@@ -67,6 +67,7 @@
                                            </select>
                                             
                                         </div>
+
                                         <div class="form-group">
                                            <label>Total (Year/Semester)</label>
                                            <select class="form-control" name="total">
@@ -76,6 +77,7 @@
                                            </select>
                                             
                                         </div>
+
                                                                                
                                         
                                         <button type="submit" class="btn btn-default" name="new_course" value="change password">Add Course</button>

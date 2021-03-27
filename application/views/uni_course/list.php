@@ -31,6 +31,7 @@
                                         <th>Course Code</th>
                                         <th>Type</th>
                                         <th>Total(Sem/Year)</th>
+
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -41,6 +42,7 @@
                                         <td><?php echo $cdata['university_name'];?></td>
                                         <td><?php echo $cdata['course_name'];?></td>
                                         <td><?php echo $cdata['course_code'];?></td>
+
                                         <td><?php echo $cdata['type'];?></td>
                                          <td><?php echo $cdata['total']." ".$cdata['type'];?></td>
                                         <td class="center">

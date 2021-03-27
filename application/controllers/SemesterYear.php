@@ -23,13 +23,16 @@ class SemesterYear extends CI_Controller {
     	is_logged_in();
       	$this->load->model('University_model');
 		$this->load->library('form_validation');
+
 		$this->load->model('UniCourse_model');
 		$this->load->model('SemYear_model');
+
    	}
 
 
 	public function manage($course_id)
 	{	
+
  		
  		$data['course_data'] = $this->UniCourse_model->find($course_id);
  		$data['sem_year'] = $this->SemYear_model->findByCourse($course_id);
@@ -54,6 +57,7 @@ class SemesterYear extends CI_Controller {
      		// $data['all'] = $this->SemesterYear_model->all();
 			$this->load->view('uni_course/semester_year', $data);
      	}		
+
 	}
 
 	
