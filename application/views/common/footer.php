@@ -63,6 +63,8 @@
     }
 
     function getCourses(id) {
+      $('#sem_yearly').html("");
+      $('#fee').val("");
       $.ajax({
         url: "<?php echo base_url('unistudents/getCourses/') ?>" + id,
         type: "POST",
@@ -78,6 +80,7 @@
     }
 
     function getDuration(id) {
+      $('#fee').val("");
       $.ajax({
         url: "<?php echo base_url('unistudents/getDuration/') ?>" + id,
         type: "POST",

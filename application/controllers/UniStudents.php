@@ -10,6 +10,7 @@ class UniStudents extends CI_Controller
         is_logged_in();
         $this->load->model('UniStudent_model');
         $this->load->model('UniCourse_model');
+        $this->load->model('SemYear_model');
         $this->load->library('form_validation');
     }
 
@@ -48,7 +49,7 @@ class UniStudents extends CI_Controller
         }
     }
 
-    public function getCourses($id)
+    public function getCourses($id = 0)
     {
         $results = $this->UniCourse_model->findByUniversity($id);
         $option = "<option value=''>Select Course</option>";
@@ -59,11 +60,26 @@ class UniStudents extends CI_Controller
         echo json_encode(["success" => 1, "html" => $option]);
     }
 
-    public function getDuration()
+    public function getDuration($id = 0)
     {
+        $course = $this->UniCourse_model->find($id);
+        $type = $course["type"];
+        $results = $this->SemYear_model->findByCourse($id);
+        $option = "<option value=''>Select Course</option>";
+        foreach ($results as $key => $result) {
+            $option .= "<option value='" . $result["id"] . "'>" . $result["sem_year"] . " " . $type . "</option>";
+        }
+
+        echo json_encode(["success" => 1, "html" => $option]);
     }
 
-    public function getFee()
+    public function getFee($id = 0)
     {
+        $result = $this->SemYear_model->findFeeByID($id); 
+        $fee = "";
+        if(!empty($result)){
+            $fee = $result["fee"];
+        }
+        echo json_encode(["success" => 1, "fee" => $fee]);  
     }
 }
