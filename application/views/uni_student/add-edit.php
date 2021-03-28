@@ -21,6 +21,7 @@ $this->load->view('common/leftmenu');
                     New Student
                     <a href="<?php echo base_url(); ?>unistudents" class="btn btn-sm btn-primary pull-right mb-1">List Student</a>
                 </div>
+
                 <div class="col-md-8"> <br />
                     <?php if ($this->session->flashdata('success_msg')) { ?>
                         <div class="alert alert-success"> <?php echo $this->session->flashdata('success_msg');  ?></div>
