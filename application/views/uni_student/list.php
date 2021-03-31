@@ -38,26 +38,31 @@ $this->load->view('common/leftmenu');
                                 <th>Name</th>
                                 <th>Fname</th>
                                 <th>Mobile</th>
+                                <th>University</th>
                                 <th>Course</th>
                                 <th>Current Sem/Year</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>ASGVHJ124</td>
-                                <td>John Doe</td>
-                                <td>Ryan Dalh</td>
-                                <td>+6356657678</td>
-                                <td>MBA</td>
-                                <td>1st Sem/Year</td>
-                                <td class="center" style="width:20%;">
-                                    <a href="<?php echo base_url(); ?>unistudents/edit/1" class="label label-success label-sm">Edit</a>
-                                    <a href="<?php echo base_url(); ?>unistudents/promote/1" class="label label-primary label-sm">Promote</a>
-                                    <a href="#" class="label label-danger label-sm">Delete</a>
-                                </td>
-                            </tr>
+                            <?php $ii =1; foreach($all as $uni_student) { ?>
+                                <tr>
+                                    <td><?php echo $ii; ?></td>
+                                    <td><?php echo $uni_student['enrollement']; ?></td>
+                                    <td><?php echo $uni_student['sname']; ?></td>
+                                    <td><?php echo $uni_student['fname']; ?></td>
+                                    <td><?php echo $uni_student['mobile']; ?></td>
+                                    <td><?php echo $uni_student['university_name']; ?></td>
+                                    <td><?php echo $uni_student['course_name']; ?></td>
+                                    <td><?php echo $uni_student['sem_yearly']. " ".$uni_student['course_type']; ?></td>
+                                    <td class="center" style="width:20%;">
+                                        <a href="<?php echo base_url(); ?>unistudents/edit/<?php echo $uni_student['id']; ?>" class="label label-success label-sm">Edit</a>
+                                        <a href="<?php echo base_url(); ?>unistudents/promote/<?php echo $uni_student['id']; ?>" class="label label-primary label-sm">Promote</a>
+                                        <a href="#" class="label label-danger label-sm">Delete</a>
+                                    </td>
+                                </tr>
+                            <?php $ii++; } ?>
+                           
                         </tbody>
                     </table>
                 </div>

@@ -64,6 +64,14 @@ class UniStudent_model extends CI_Model
 
     public function all()
     {
+        $this->db->order_by("uni_students.id", "DESC");
+        $this->db->select('uni_students.*, university.name AS university_name, university_course.course_name, university_course.type AS course_type');
+        $this->db->from('uni_students');
+        $this->db->join('university', 'uni_students.university_id = university.id');
+        $this->db->join('university_course', 'uni_students.course_id = university_course.id');
+        $query = $this->db->get();
+        // echo $this->db->last_query(); exit;
+        return $query->result_array();
     }
 
     public function find($id)
