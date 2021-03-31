@@ -51,7 +51,7 @@ class UniStudents extends CI_Controller
             $this->form_validation->set_rules('remark', 'Remark', 'trim');
 
             if ($this->form_validation->run() == FALSE) {
-                $this->load->view('uni_student/add-edit');
+                $this->load->view('uni_student/add');
             } else {
                 $result = $this->UniStudent_model->createOrUpdate($this->input->post());
                 if ($result == false) {
@@ -62,16 +62,58 @@ class UniStudents extends CI_Controller
                 redirect('unistudents/create');
             }
         } else {
-            $this->load->view('uni_student/add-edit');
+            $this->load->view('uni_student/add');
         }
     }
 
     public function edit($id = '')
     {
         if ($this->input->post('submit')) {
+            // $this->form_validation->set_rules('enrollement', 'Enrollement Number', 'trim|required');
+            $this->form_validation->set_rules('aadhar', 'Aadhar Number', 'trim');
+            $this->form_validation->set_rules('sname', 'Student Name', 'trim|required');
+
+            $this->form_validation->set_rules('fname', 'Father Name', 'trim|required');
+            $this->form_validation->set_rules('mname', 'Mother Name', 'trim');
+            $this->form_validation->set_rules('dob', 'Date of Birth', 'trim|required');
+
+            $this->form_validation->set_rules('address', 'Address', 'trim|required');
+            $this->form_validation->set_rules('mobile', 'Mobile', 'trim|required|is_natural_no_zero|exact_length[10]');
+            $this->form_validation->set_rules('wmobile', 'Whatsapp Mobile', 'trim|is_natural_no_zero|exact_length[10]');
+
+            $this->form_validation->set_rules('pincode', 'Pincode', 'trim|required|is_natural_no_zero');
+            $this->form_validation->set_rules('district', 'District', 'trim|required');
+            $this->form_validation->set_rules('state', 'State', 'trim|required');
+
+            // $this->form_validation->set_rules('university_id', 'University', 'trim|required|is_natural_no_zero');
+            // $this->form_validation->set_rules('course_id', 'Course', 'trim|required|is_natural_no_zero');
+            // $this->form_validation->set_rules('sem_yearly', 'Sem / Yearly', 'trim|required|is_natural_no_zero');
+
+            // $this->form_validation->set_rules('discount', 'Course Discount', 'trim|required|is_natural');
+            // $this->form_validation->set_rules('fee', 'Fee', 'trim|required|is_natural');
+
+            $this->form_validation->set_rules('education_type', 'Education Type', 'trim|required');
+            $this->form_validation->set_rules('remark', 'Remark', 'trim');
+
+            if ($this->form_validation->run() == FALSE) {
+                $this->load->view('uni_student/edit');
+            } else {
+                $result = $this->UniStudent_model->createOrUpdate($this->input->post());
+                if ($result == false) {
+                    $this->session->set_flashdata('error_msg', 'Student not added, Please try again');
+                } else {
+                    $this->session->set_flashdata('success_msg', 'Student added successfully');
+                }
+                redirect('unistudents');
+            }
         } else {
-            $data['data'] = $this->UniStudent_model->find($id);
-            $this->load->view('uni_student/add-edit', $data);
+            $dataObject = $this->UniStudent_model->find($id);
+            if (!empty($dataObject)) {
+                $data['data'] = (array) $dataObject;
+            } else {
+                redirect('unistudents');
+            }
+            $this->load->view('uni_student/edit', $data);
         }
     }
 
