@@ -24,6 +24,43 @@ class UniStudents extends CI_Controller
     {
 
         if ($this->input->post('submit')) {
+            $this->form_validation->set_rules('enrollement', 'Enrollement Number', 'trim|required');
+            $this->form_validation->set_rules('aadhar', 'Aadhar Number', 'trim');
+            $this->form_validation->set_rules('sname', 'Student Name', 'trim|required');
+
+            $this->form_validation->set_rules('fname', 'Father Name', 'trim|required');
+            $this->form_validation->set_rules('mname', 'Mother Name', 'trim');
+            $this->form_validation->set_rules('dob', 'Date of Birth', 'trim|required');
+
+            $this->form_validation->set_rules('address', 'Address', 'trim|required');
+            $this->form_validation->set_rules('mobile', 'Mobile', 'trim|required|is_natural_no_zero|exact_length[10]');
+            $this->form_validation->set_rules('wmobile', 'Whatsapp Mobile', 'trim|is_natural_no_zero|exact_length[10]');
+
+            $this->form_validation->set_rules('pincode', 'Pincode', 'trim|required|is_natural_no_zero');
+            $this->form_validation->set_rules('district', 'District', 'trim|required');
+            $this->form_validation->set_rules('state', 'State', 'trim|required');
+
+            $this->form_validation->set_rules('university_id', 'University', 'trim|required|is_natural_no_zero');
+            $this->form_validation->set_rules('course_id', 'Course', 'trim|required|is_natural_no_zero');
+            $this->form_validation->set_rules('sem_yearly', 'Sem / Yearly', 'trim|required|is_natural_no_zero');
+
+            $this->form_validation->set_rules('discount', 'Course Discount', 'trim|required|is_natural');
+            $this->form_validation->set_rules('fee', 'Fee', 'trim|required|is_natural');
+
+            $this->form_validation->set_rules('education_type', 'Education Type', 'trim|required');
+            $this->form_validation->set_rules('remark', 'Remark', 'trim');
+
+            if ($this->form_validation->run() == FALSE) {
+                $this->load->view('uni_student/add-edit');
+            } else {
+                $result = $this->UniStudent_model->createOrUpdate($this->input->post());
+                if ($result == false) {
+                    $this->session->set_flashdata('error_msg', 'Student not added, Please try again');
+                } else {
+                    $this->session->set_flashdata('success_msg', 'Student added successfully');
+                }
+                redirect('unistudents/create');
+            }
         } else {
             $this->load->view('uni_student/add-edit');
         }
@@ -75,11 +112,11 @@ class UniStudents extends CI_Controller
 
     public function getFee($id = 0)
     {
-        $result = $this->SemYear_model->findFeeByID($id); 
+        $result = $this->SemYear_model->findFeeByID($id);
         $fee = "";
-        if(!empty($result)){
+        if (!empty($result)) {
             $fee = $result["fee"];
         }
-        echo json_encode(["success" => 1, "fee" => $fee]);  
+        echo json_encode(["success" => 1, "fee" => $fee]);
     }
 }
