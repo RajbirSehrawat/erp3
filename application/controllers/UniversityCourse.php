@@ -68,6 +68,7 @@ class UniversityCourse extends CI_Controller {
 	public function edit($course_id = '') 
 	{
 		$data['university'] = $this->University_model->all();
+		
 		if($this->input->post('edit_course')){
 			$this->form_validation->set_rules('course_code', 'Course Code', 'trim|required|callback_chk_code');
 			$this->form_validation->set_rules('course_name', 'Course Name', 'trim|required');

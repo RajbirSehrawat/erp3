@@ -96,8 +96,9 @@
     }
 
     function getFee(id) {
+      course_id = $('#course_id').val()
       $.ajax({
-        url: "<?php echo base_url('unistudents/getFee//') ?>" + id,
+        url: "<?php echo base_url('unistudents/getUniFee/') ?>" +course_id+'/'+id,
         type: "POST",
         data: 'id=' + id,
         dataType: "JSON",

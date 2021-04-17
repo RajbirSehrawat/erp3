@@ -20,8 +20,9 @@
              <div class="col-md-12"> <br/>          
            <?php if($this->session->flashdata('success_msg')) { ?>
 				<div class="alert alert-success"> <?php echo $this->session->flashdata('success_msg');  ?></div>
-				<?php } if($this->session->flashdata('error_msg_msg')) { ?>
-					<div class="alert alert-danger" > <?php echo $this->session->flashdata('error_msg_msg'); ?></div>
+				<?php } 
+                if($this->session->flashdata('error_msg')) { ?>
+					<div class="alert alert-danger" > <?php echo $this->session->flashdata('error_msg'); ?></div>
 				<?php }  ?>
 				</div>
                         <div class="panel-body">

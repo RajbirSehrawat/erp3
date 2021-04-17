@@ -33,12 +33,12 @@ $this->load->view('common/leftmenu');
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            <?php echo form_open('unistudents/edit', 'enctype=multipart/form-data'); ?>
+                            <?php echo form_open('unistudents/edit/'. $data['enrollement'], 'enctype=multipart/form-data'); ?>
                             <input type="hidden" name="id" value="<?= $data["id"]; ?>">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Enrollment Number</label>
-                                    <input class="form-control" disabled name="enrollement" value="<?= $data["enrollement"] ?>">
+                                    <input class="form-control" disabled name="enrollementttt" value="<?= $data["enrollement"] ?>">
                                     <?php if (form_error('enrollement')) {
                                         echo form_error('enrollement', '<p class="text-danger">', '</p>');
                                     } ?>
@@ -167,10 +167,8 @@ $this->load->view('common/leftmenu');
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Sem/Yearly</label>
-                                    <input class="form-control" disabled name="state" value="<?php echo $data["course_type"]; ?>">
-                                    <?php if (form_error('sem_yearly')) {
-                                        echo form_error('sem_yearly', '<p class="text-danger">', '</p>');
-                                    } ?>
+                                    <input class="form-control" disabled name="state" value="<?php echo $data["sem_yearly"]. " ".$data["course_type"]; ?>">
+                                    
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -194,7 +192,7 @@ $this->load->view('common/leftmenu');
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Education Type</label>
-                                    <select name="education_type" class="form-control">
+                                    <select name="education_type" class="form-control" disabled>
                                         <option value=""> Select Caste</option>
                                         <option value="1" <?php echo ($data["education_type"] == 1) ? "selected" : ""; ?>> Regular</option>
                                         <option value="2" <?php echo ($data["education_type"] == 2) ? "selected" : ""; ?>> Distance</option>

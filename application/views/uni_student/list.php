@@ -56,8 +56,8 @@ $this->load->view('common/leftmenu');
                                     <td><?php echo $uni_student['course_name']; ?></td>
                                     <td><?php echo $uni_student['sem_yearly']. " ".$uni_student['course_type']; ?></td>
                                     <td class="center" style="width:20%;">
-                                        <a href="<?php echo base_url(); ?>unistudents/edit/<?php echo $uni_student['id']; ?>" class="label label-success label-sm">Edit</a>
-                                        <a href="<?php echo base_url(); ?>unistudents/promote/<?php echo $uni_student['id']; ?>" class="label label-primary label-sm">Promote</a>
+                                        <a href="<?php echo base_url(); ?>unistudents/edit/<?php echo $uni_student['enrollement']; ?>" class="label label-success label-sm">Edit</a>
+                                        <a href="<?php echo base_url(); ?>unistudents/promote/<?php echo $uni_student['enrollement']; ?>" class="label label-primary label-sm">Promote</a>
                                         <a href="#" class="label label-danger label-sm">Delete</a>
                                     </td>
                                 </tr>

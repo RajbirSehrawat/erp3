@@ -21,11 +21,13 @@ class SemYear_model extends CI_Model
 
 		$this->db->insert_batch('university_course_fees', $data);
 		// echo $this->db->last_query(); exit;
+
 		if ($this->db->trans_status() == true) {
 			return true;
-		} else {
-			return false;
 		}
+		
+		return false;
+		
 	}
 
 	public function all()
@@ -73,14 +75,15 @@ class SemYear_model extends CI_Model
 		return $result;
 	}
 
-	public function findFeeByID($id)
+	public function findFeeByID($course_id, $sem_year)
 	{
 		$result = array();
 		$this->db->order_by('sem_year', 'ASC');
-		$query = $this->db->get_where('university_course_fees', array('id' => $id));
+		$query = $this->db->get_where('university_course_fees', array('course_id' => $course_id, 'sem_year'=> $sem_year));
 
 		$result = $query->row();
 
 		return (array) $result;
 	}
+
 }

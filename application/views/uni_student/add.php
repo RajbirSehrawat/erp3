@@ -198,7 +198,7 @@ $this->load->view('common/leftmenu');
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Discount (Rupees)</label>
-                                    <input class="form-control" name="discount" value="<?php echo set_value('discount'); ?>">
+                                    <input class="form-control" name="discount" value="<?php if(set_value('discount')) echo set_value('discount'); else echo 0; ?>">
                                     <?php if (form_error('discount')) {
                                         echo form_error('discount', '<p class="text-danger">', '</p>');
                                     } ?>

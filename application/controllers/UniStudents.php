@@ -44,8 +44,8 @@ class UniStudents extends CI_Controller
             $this->form_validation->set_rules('course_id', 'Course', 'trim|required|is_natural_no_zero');
             $this->form_validation->set_rules('sem_yearly', 'Sem / Yearly', 'trim|required|is_natural_no_zero');
 
-            $this->form_validation->set_rules('discount', 'Course Discount', 'trim|required|is_natural');
             $this->form_validation->set_rules('fee', 'Fee', 'trim|required|is_natural');
+            $this->form_validation->set_rules('discount', 'Discount', 'trim|required|is_natural|less_than['.$this->input->post('fee').']');
 
             $this->form_validation->set_rules('education_type', 'Education Type', 'trim|required');
             $this->form_validation->set_rules('remark', 'Remark', 'trim');
@@ -53,7 +53,7 @@ class UniStudents extends CI_Controller
             if ($this->form_validation->run() == FALSE) {
                 $this->load->view('uni_student/add');
             } else {
-                $result = $this->UniStudent_model->createOrUpdate($this->input->post());
+                $result = $this->UniStudent_model->create($this->input->post());
                 if ($result == false) {
                     $this->session->set_flashdata('error_msg', 'Student not added, Please try again');
                 } else {
@@ -66,10 +66,11 @@ class UniStudents extends CI_Controller
         }
     }
 
-    public function edit($id = '')
+    public function edit($enrollment = '')
     {
+        
         if ($this->input->post('submit')) {
-            // $this->form_validation->set_rules('enrollement', 'Enrollement Number', 'trim|required');
+            
             $this->form_validation->set_rules('aadhar', 'Aadhar Number', 'trim');
             $this->form_validation->set_rules('sname', 'Student Name', 'trim|required');
 
@@ -85,29 +86,21 @@ class UniStudents extends CI_Controller
             $this->form_validation->set_rules('district', 'District', 'trim|required');
             $this->form_validation->set_rules('state', 'State', 'trim|required');
 
-            // $this->form_validation->set_rules('university_id', 'University', 'trim|required|is_natural_no_zero');
-            // $this->form_validation->set_rules('course_id', 'Course', 'trim|required|is_natural_no_zero');
-            // $this->form_validation->set_rules('sem_yearly', 'Sem / Yearly', 'trim|required|is_natural_no_zero');
-
-            // $this->form_validation->set_rules('discount', 'Course Discount', 'trim|required|is_natural');
-            // $this->form_validation->set_rules('fee', 'Fee', 'trim|required|is_natural');
-
-            $this->form_validation->set_rules('education_type', 'Education Type', 'trim|required');
             $this->form_validation->set_rules('remark', 'Remark', 'trim');
 
             if ($this->form_validation->run() == FALSE) {
                 $this->load->view('uni_student/edit');
             } else {
-                $result = $this->UniStudent_model->createOrUpdate($this->input->post());
-                if ($result == false) {
-                    $this->session->set_flashdata('error_msg', 'Student not added, Please try again');
+                $result = $this->UniStudent_model->update($this->input->post(), $enrollment);
+                if ($result) {
+                    $this->session->set_flashdata('success_msg', 'Student updated successfully');
                 } else {
-                    $this->session->set_flashdata('success_msg', 'Student added successfully');
+                    $this->session->set_flashdata('error_msg', 'Student updated, Please try again');
                 }
                 redirect('unistudents');
             }
         } else {
-            $dataObject = $this->UniStudent_model->find($id);
+            $dataObject = $this->UniStudent_model->findByEnroll($enrollment);
             if (!empty($dataObject)) {
                 $data['data'] = (array) $dataObject;
             } else {
@@ -116,6 +109,8 @@ class UniStudents extends CI_Controller
             $this->load->view('uni_student/edit', $data);
         }
     }
+
+
 
     public function chk_code($id = 0, $code = "")
     {
@@ -126,6 +121,17 @@ class UniStudents extends CI_Controller
             $this->form_validation->set_message('chk_name', 'Enrollment number already exists.');
             return false;
         }
+    }
+
+    function check_discount($discount=0, $fee=0) 
+    { 
+        if ($discount >= $fee) { 
+            $this->form_validation->set_message('discount', 'The discount must be less than total fee.'); 
+            return false;
+        }
+        else { 
+            return true; 
+        } 
     }
 
     public function getCourses($id = 0)
@@ -146,19 +152,65 @@ class UniStudents extends CI_Controller
         $results = $this->SemYear_model->findByCourse($id);
         $option = "<option value=''>Select Course</option>";
         foreach ($results as $key => $result) {
-            $option .= "<option value='" . $result["id"] . "'>" . $result["sem_year"] . " " . $type . "</option>";
+            $option .= "<option value='" . $result["sem_year"] . "'>" . $result["sem_year"] . " " . $type . "</option>";
         }
 
         echo json_encode(["success" => 1, "html" => $option]);
     }
 
-    public function getFee($id = 0)
+    public function getUniFee($course_id = 0, $sem_year = 0)
     {
-        $result = $this->SemYear_model->findFeeByID($id);
+        $result = $this->SemYear_model->findFeeByID($course_id, $sem_year);
         $fee = "";
         if (!empty($result)) {
             $fee = $result["fee"];
         }
         echo json_encode(["success" => 1, "fee" => $fee]);
+    }
+
+    public function promote($enrollment='')
+    {
+        $dataObject = $this->UniStudent_model->findByEnroll($enrollment);
+            if (!empty($dataObject)) {
+                $data['uni_student'] = (array) $dataObject;
+                $student_id = $data['uni_student']['id'];
+                $university = $data['uni_student']['university_id'];
+                $course = $data['uni_student']['course_id'];
+                $current_sem_year = $data['uni_student']['sem_yearly'];
+                $next_sem_year = $current_sem_year + 1;
+                $next_class = $this->SemYear_model->findFeeByID($course, $next_sem_year);
+                // print_r($next_class);
+
+                $data['next_class'] = $next_class;
+            } else {
+                $this->session->set_flashdata('error_msg', 'No record were found, Please try again');
+                redirect('unistudents');
+            }
+
+        
+        if ($this->input->post('submit')) {
+            $this->form_validation->set_rules('enrollement', 'Enrollement Number', 'trim|required');   
+            $this->form_validation->set_rules('course_fee', 'Fee', 'trim|required|is_natural');
+            $this->form_validation->set_rules('discount', 'Discount', 'trim|required|is_natural|less_than['.$this->input->post('course_fee').']');
+            $this->form_validation->set_rules('remark', 'Remark', 'trim|required');
+
+            if ($this->form_validation->run()) {
+                $discount = $this->input->post('discount');
+                $remarks = $this->input->post('remark');
+                $next_fees = $next_class['fee'];
+                $result = $this->UniStudent_model->promote($student_id, $university, $course, $next_sem_year,$next_fees, $discount, $remarks);
+                if ($result == false) {
+                    $this->session->set_flashdata('error_msg', 'Student not promoted, Please try again');
+                } else {
+                    $this->session->set_flashdata('success_msg', 'Student promoted successfully');
+                }
+                redirect('unistudents/promote/'. $enrollment);
+               
+            } else {
+                $this->load->view('uni_student/promote', $data);
+            }
+        } else {
+            $this->load->view('uni_student/promote', $data);
+        }
     }
 }
