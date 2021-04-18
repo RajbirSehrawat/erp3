@@ -139,9 +139,13 @@
         url: "<?php echo base_url('unistudents/uniStudentFeeCheck') ?>",
         type: "POST",
         data: 'id=' + id,
-        // dataType: "JSON",
+        dataType: "JSON",
         success: function(res) {
-          alert(res);
+          var obj = JSON.parse(JSON.stringify(res));
+          $('#total_fee').val(obj.total_fee);
+          $('#discount').val(obj.discount);
+          $('#deposited_fee').val(obj.deposited_fee);
+          $('#pending_fee').val(obj.pending_fee);
         },
         error: function(jqXHR, textStatus, errorThrown) {
           alert('Error get data from ajax');

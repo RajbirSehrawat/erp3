@@ -58,6 +58,7 @@ $this->load->view('common/leftmenu');
                                     <td class="center" style="width:20%;">
                                         <a href="<?php echo base_url(); ?>unistudents/edit/<?php echo $uni_student['enrollement']; ?>" class="label label-success label-sm">Edit</a>
                                         <a href="<?php echo base_url(); ?>unistudents/promote/<?php echo $uni_student['enrollement']; ?>" class="label label-primary label-sm">Promote</a>
+                                        <a href="<?php echo base_url(); ?>unistudents/fee/<?php echo $uni_student['enrollement']; ?>" class="label label-warning label-sm">Fee</a>
                                         <a href="#" class="label label-danger label-sm">Delete</a>
                                     </td>
                                 </tr>

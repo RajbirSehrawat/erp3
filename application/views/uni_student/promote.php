@@ -16,6 +16,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             Promote University Student
+                            <a href="<?php echo base_url(); ?>unistudents" class="btn btn-sm btn-primary pull-right mb-1">Student List</a>
                         </div>
              <div class="col-md-12"> <br/>          
            <?php if($this->session->flashdata('success_msg')) { ?>

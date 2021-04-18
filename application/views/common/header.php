@@ -38,7 +38,12 @@
     <![endif]-->
     
     <link href="<?php echo base_url();?>assets/css/jquery-ui.css" rel="stylesheet">
-
+    <style>
+        .mb-1{
+            margin-bottom: 1rem !important;
+            padding: 2px 9px;
+        }
+    </style>
 </head>
 
 <body>

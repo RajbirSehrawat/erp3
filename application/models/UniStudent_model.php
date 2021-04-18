@@ -189,8 +189,49 @@ class UniStudent_model extends CI_Model
 
     public function getDepositedFee($admission_id)
 	{
-		$query = $this->db->get_where('uni_student_admission', array('id'=> $admission_id));
-        return $query->row();
+        $this->db->select("SUM(amount) AS total_deposited");
+		$query = $this->db->get_where('uni_admission_fees', array('admission_id'=> $admission_id));
+        $result= $query->row();
+        $total_deposited = $result->total_deposited;
+        if($total_deposited){
+            return $total_deposited;
+        } 
+
+        return 0;
 	}
+
+    public function fee_payment($admission_id, $amount=0, $remarks='')
+    {
+        try{
+            $data = [
+                "admission_id" => $admission_id,
+                "amount" => $amount,
+                "remarks" => $remarks,
+                "created_at" => date("Y-m-d H:i:s")
+            ];
+
+            $this->db->insert('uni_admission_fees', $data);
+            // echo $this->db->last_query(); exit;
+            if ($this->db->trans_status()) {
+                return true;
+            }
+            return false;  
+        }
+        catch(Exception $e) {
+            return false;
+        } 
+    }  
+
+    public function get_fee_payments($student_id)
+    {
+        $this->db->order_by("uni_admission_fees.id", "DESC");
+        $this->db->select('uni_admission_fees.*, uni_student_admission.sem_yearly');
+        $this->db->from('uni_student_admission');
+        $this->db->join('uni_admission_fees', 'uni_student_admission.id = uni_admission_fees.admission_id');
+        $this->db->where('uni_student_admission.student_id', $student_id);
+        $query = $this->db->get();
+        // echo $this->db->last_query(); exit;
+        return $query->result_array();
+    }
 
 }
