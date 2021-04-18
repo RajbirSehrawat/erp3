@@ -213,4 +213,74 @@ class UniStudents extends CI_Controller
             $this->load->view('uni_student/promote', $data);
         }
     }
+
+
+    public function fee($enrollment='')
+    {
+        $dataObject = $this->UniStudent_model->findByEnroll($enrollment);
+            if (!empty($dataObject)) {
+                $data['uni_student'] = (array) $dataObject;
+                $student_id = $data['uni_student']['id'];
+                $my_sem_years = $this->UniStudent_model->studentSemYears($student_id);
+                $data['my_sem_years'] = $my_sem_years;
+               
+            } else {
+                $this->session->set_flashdata('error_msg', 'No record were found, Please try again');
+                redirect('unistudents');
+            }
+
+        
+        if ($this->input->post('submit')) {
+            $this->form_validation->set_rules('enrollement', 'Enrollement Number', 'trim|required');   
+            $this->form_validation->set_rules('course_fee', 'Fee', 'trim|required|is_natural');
+            $this->form_validation->set_rules('discount', 'Discount', 'trim|required|is_natural|less_than['.$this->input->post('course_fee').']');
+            $this->form_validation->set_rules('remark', 'Remark', 'trim|required');
+
+            if ($this->form_validation->run()) {
+                $discount = $this->input->post('discount');
+                $remarks = $this->input->post('remark');
+                $next_fees = $next_class['fee'];
+                $result = $this->UniStudent_model->promote($student_id, $university, $course, $next_sem_year,$next_fees, $discount, $remarks);
+                if ($result == false) {
+                    $this->session->set_flashdata('error_msg', 'Student not promoted, Please try again');
+                } else {
+                    $this->session->set_flashdata('success_msg', 'Student promoted successfully');
+                }
+                redirect('unistudents/promote/'. $enrollment);
+               
+            } else {
+                $this->load->view('uni_student/promote', $data);
+            }
+        } else {
+            $this->load->view('uni_student/fee', $data);
+        }
+    }
+
+    public function uniStudentFeeCheck()
+    {
+        $admission_id = $this->input->post('id');
+
+        $total_fee= 0;
+        $discount = 0;
+        $deposited_fee = 0;
+        $pending_fee = 0;
+
+        $admission = $this->UniStudent_model->getAdmissionFee($admission_id);
+        if($admission){
+            $admission = (array) $admission;
+            $total_fee = $admission['fee'];
+            $discount = $admission['discount'];
+        }
+
+        $depositedFee = $this->UniStudent_model->getDepositedFee($admission_id);
+
+        $array = [
+            'total_fee'=> $total_fee,
+            'discount'=> $discount,
+            'deposited_fee'=> $deposited_fee,
+            'pending_fee'=> $pending_fee
+        ];
+
+        echo json_encode($array);        
+    }
 }

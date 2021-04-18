@@ -130,6 +130,24 @@
         source: '<?php echo base_url('course/suggest_courses'); ?>'
       });
     });
+
+
+    function checkUniFee(id) {
+      $('#sem_yearly').html("");
+      $('#fee').val("");
+      $.ajax({
+        url: "<?php echo base_url('unistudents/uniStudentFeeCheck') ?>",
+        type: "POST",
+        data: 'id=' + id,
+        // dataType: "JSON",
+        success: function(res) {
+          alert(res);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert('Error get data from ajax');
+        }
+      });
+    }
   </script>
 
   </body>

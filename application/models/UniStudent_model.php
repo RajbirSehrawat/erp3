@@ -170,8 +170,27 @@ class UniStudent_model extends CI_Model
         catch(Exception $e) {
             $this->db->trans_rollback();
             return false;
-          }
-        
+          }   
     }
+
+    public function studentSemYears($student_id=0)
+	{
+		$this->db->order_by('sem_yearly');
+		$query = $this->db->get_where('uni_student_admission', array('student_id'=> $student_id));
+        return $query->result_array();
+
+	}
+
+    public function getAdmissionFee($admission_id)
+	{
+		$query = $this->db->get_where('uni_student_admission', array('id'=> $admission_id));
+        return $query->row();
+	}
+
+    public function getDepositedFee($admission_id)
+	{
+		$query = $this->db->get_where('uni_student_admission', array('id'=> $admission_id));
+        return $query->row();
+	}
 
 }
