@@ -218,7 +218,7 @@
                                         <td><?php echo $fee['amount'];?></td>
                                         <td><?php echo $fee['created_at'];?></td>
  										<td class="center">
-                                        	<a href="<?php echo base_url();?>uni_student/receipt/<?php echo $uni_student['enrollement'].'/'.$fee['id'];?>" target="_blank" class="label label-danger label-sm">Fee Slip</a> &nbsp; 
+                                        	<a href="<?php echo base_url();?>unistudents/receipt/<?php echo $uni_student['enrollement'].'/'.$fee['id'];?>" target="_blank" class="label label-danger label-sm">Fee Slip</a> &nbsp; 
 							
                                         </td>
                                     </tr>

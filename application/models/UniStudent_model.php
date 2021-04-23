@@ -234,4 +234,14 @@ class UniStudent_model extends CI_Model
         return $query->result_array();
     }
 
+    public function get_payment($payment_id)
+    {
+        $this->db->select('uni_admission_fees.*, uni_student_admission.sem_yearly');
+        $this->db->from('uni_admission_fees');
+        $this->db->join('uni_student_admission', 'uni_student_admission.id = uni_admission_fees.admission_id');
+        $this->db->where('uni_admission_fees.id', $payment_id);
+        $query = $this->db->get();
+        return (array) $query->row();
+    }
+
 }

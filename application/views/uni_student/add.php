@@ -37,7 +37,7 @@ $this->load->view('common/leftmenu');
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Enrollment Number</label>
-                                    <input class="form-control" readonly="" name="enrollement" value="<?php echo 'ECR' . date('Ymdhis'); ?>">
+                                    <input class="form-control" readonly="" name="enrollement" value="<?php echo 'ECU' . date('Ymdhis'); ?>">
                                     <?php if (form_error('enrollement')) {
                                         echo form_error('enrollement', '<p class="text-danger">', '</p>');
                                     } ?>

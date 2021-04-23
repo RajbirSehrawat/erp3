@@ -218,18 +218,18 @@ class UniStudents extends CI_Controller
     public function fee($enrollment='')
     {
         $dataObject = $this->UniStudent_model->findByEnroll($enrollment);
-            if (!empty($dataObject)) {
-                $data['uni_student'] = (array) $dataObject;
-                $student_id = $data['uni_student']['id'];
-                $my_sem_years = $this->UniStudent_model->studentSemYears($student_id);
-                $data['my_sem_years'] = $my_sem_years;
-                $data['my_fee_payments'] = $this->UniStudent_model->get_fee_payments($student_id);
-               
-               
-            } else {
-                $this->session->set_flashdata('error_msg', 'No record were found, Please try again');
-                redirect('unistudents');
-            }
+        if (!empty($dataObject)) {
+            $data['uni_student'] = (array) $dataObject;
+            $student_id = $data['uni_student']['id'];
+            $my_sem_years = $this->UniStudent_model->studentSemYears($student_id);
+            $data['my_sem_years'] = $my_sem_years;
+            $data['my_fee_payments'] = $this->UniStudent_model->get_fee_payments($student_id);
+            
+            
+        } else {
+            $this->session->set_flashdata('error_msg', 'No record were found, Please try again');
+            redirect('unistudents');
+        }
 
         
         if ($this->input->post('submit')) {
@@ -295,4 +295,39 @@ class UniStudents extends CI_Controller
         ];
 
     }
+
+    public function receipt($enrollment, $receipt_id=0)
+	{
+		$dataObject = $this->UniStudent_model->findByEnroll($enrollment);
+        if (!empty($dataObject)) {
+            $data['uni_student'] = (array) $dataObject;          
+            $data['fee_payment'] = $this->UniStudent_model->get_payment($receipt_id);
+            $data['fee_detail'] = $this->getAdmissionFeeInfo($data['fee_payment']['admission_id']);
+            // print_r($data['uni_student']);
+        } else {
+            $this->session->set_flashdata('error_msg', 'No record were found, Please try again');
+            redirect('unistudents');
+        }
+		
+		// $this->load->library('numbertowords');
+		// $data['amount_words'] = $this->numbertowords->convert_number($data['receipt_data']['amount']); 
+		
+		@unlink(FCPATH.'tes.png');
+		
+		// // QR code
+	    $this->load->library('ciqrcode');
+		$config['cacheable']	= false;
+	    $qr_text = $data['uni_student']['enrollement'].",".$data['uni_student']['sname'].",".$data['fee_payment']['amount'].",tid:".date('Ymd', strtotime($data['fee_payment']['created_at'])).'/'.$data['fee_payment']['id'];
+		$params['data'] = $qr_text;
+		$params['size'] = 2;
+		$params['savename'] = FCPATH.'tes.png';
+		$this->ciqrcode->initialize($config);
+		$this->ciqrcode->generate($params);
+		
+		$this->load->view('uni_student/fee_slip', $data);
+		
+		// End QR code
+		
+			
+	}
 }

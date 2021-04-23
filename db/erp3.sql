@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2021 at 04:07 PM
+-- Generation Time: Apr 23, 2021 at 03:37 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -382,6 +382,14 @@ CREATE TABLE `fee` (
   `deposite_date` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `fee`
+--
+
+INSERT INTO `fee` (`id`, `enrollment`, `amount`, `remark`, `tid`, `due_date`, `deposite_date`) VALUES
+(1, 'ECR20171114113543', 200, '', '1618569001', '2021-04-16', '2021-04-16'),
+(2, 'ECR20171117120920', 2000, '', '1618825491', '2021-04-19', '2021-04-19');
+
 -- --------------------------------------------------------
 
 --
@@ -689,16 +697,17 @@ CREATE TABLE `university_course` (
   `university_id` int(11) NOT NULL,
   `course_name` varchar(100) NOT NULL,
   `course_code` varchar(100) NOT NULL,
-  `type` enum('Year','Semester') NOT NULL
+  `type` enum('Year','Semester') NOT NULL,
+  `total` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `university_course`
 --
 
-INSERT INTO `university_course` (`id`, `university_id`, `course_name`, `course_code`, `type`) VALUES
-(1, 1, 'BCA', 'KUKBCA', 'Year'),
-(2, 2, 'MCA', 'KUKBC', 'Semester');
+INSERT INTO `university_course` (`id`, `university_id`, `course_name`, `course_code`, `type`, `total`) VALUES
+(1, 1, 'BCA', 'KUKBCA', 'Year', 1),
+(2, 2, 'MCA', 'KUKBC', 'Semester', 2);
 
 -- --------------------------------------------------------
 
@@ -709,9 +718,113 @@ INSERT INTO `university_course` (`id`, `university_id`, `course_name`, `course_c
 CREATE TABLE `university_course_fees` (
   `id` int(11) NOT NULL,
   `course_id` int(11) NOT NULL,
-  `name` int(11) NOT NULL,
-  `fees` int(11) NOT NULL
+  `sem_year` int(11) NOT NULL,
+  `fee` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `university_course_fees`
+--
+
+INSERT INTO `university_course_fees` (`id`, `course_id`, `sem_year`, `fee`) VALUES
+(3, 1, 1, 5000),
+(4, 2, 1, 200),
+(5, 2, 2, 400);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `uni_admission_fees`
+--
+
+CREATE TABLE `uni_admission_fees` (
+  `id` int(11) NOT NULL,
+  `admission_id` int(11) NOT NULL,
+  `amount` int(11) NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `remarks` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `uni_admission_fees`
+--
+
+INSERT INTO `uni_admission_fees` (`id`, `admission_id`, `amount`, `created_at`, `remarks`) VALUES
+(1, 8, 100, '2021-04-18 15:41:44', NULL),
+(2, 8, 50, '2021-04-18 15:41:33', NULL),
+(3, 8, 100, '2021-04-18 23:35:48', 'this is testing'),
+(4, 7, 20, '2021-04-19 00:01:54', '20'),
+(5, 7, 20, '2021-04-19 00:02:58', ''),
+(6, 6, 2000, '2021-04-23 19:06:32', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `uni_students`
+--
+
+CREATE TABLE `uni_students` (
+  `id` int(11) NOT NULL,
+  `enrollement` varchar(255) DEFAULT NULL,
+  `aadhar` varchar(255) DEFAULT NULL,
+  `sname` varchar(255) DEFAULT NULL,
+  `fname` varchar(255) DEFAULT NULL,
+  `mname` varchar(255) DEFAULT NULL,
+  `dob` date DEFAULT NULL,
+  `mobile` varchar(15) DEFAULT NULL,
+  `wmobile` varchar(15) DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `pincode` varchar(10) DEFAULT NULL,
+  `district` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `university_id` int(11) DEFAULT NULL,
+  `course_id` int(11) DEFAULT NULL,
+  `sem_yearly` int(11) DEFAULT NULL,
+  `fee` float DEFAULT NULL,
+  `discount` float DEFAULT NULL,
+  `education_type` int(11) DEFAULT NULL,
+  `remark` text DEFAULT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `uni_students`
+--
+
+INSERT INTO `uni_students` (`id`, `enrollement`, `aadhar`, `sname`, `fname`, `mname`, `dob`, `mobile`, `wmobile`, `address`, `pincode`, `district`, `state`, `university_id`, `course_id`, `sem_yearly`, `fee`, `discount`, `education_type`, `remark`, `updated_at`) VALUES
+(7, 'ECR20210411010800', 'Rajbir', 'RAjbir', 'Bijender Singh', 'OM Wati', '2021-04-01', '9991141485', '', 'House No. 101', '121002', 'Palwal', 'Haryana', 1, 1, 1, 5000, 100, 2, '', '2021-04-17 08:12:15'),
+(8, 'ECR20210411012534', '5555', 'RAjbir', 'Bijender Singh', 'omowati', '2021-04-01', '9991141485', '', 'House No. 101', '121002', 'Palwal', 'Haryana', 1, 1, 1, 5000, 6600, 2, '', '2021-04-17 08:12:15'),
+(9, 'ECR20210414061153', 'sFSDfd ee', 'Amit Kumar ee', 'Jha ji dd', 'Mother  ee', '2021-04-01', '9898989899', '', 'jpalwal ee', '1210033', 'Palwal ee', 'Haryana ee', 1, 1, 1, 5000, 200, 1, 'eeee', '2021-04-17 08:12:15'),
+(10, 'ECR20210415095725', 'RahulAdhar', 'Rahul Kumar Jha', 'Jha ji', 'Jha ji', '2021-04-05', '8888888888', '', 'palwal', '121002', 'Palwal', 'haryana', 2, 2, 2, 400, 50, 1, 'ok', '2021-04-17 09:51:01');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `uni_student_admission`
+--
+
+CREATE TABLE `uni_student_admission` (
+  `id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `university_id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `sem_yearly` int(11) NOT NULL,
+  `fee` float NOT NULL,
+  `discount` float NOT NULL,
+  `is_current` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `uni_student_admission`
+--
+
+INSERT INTO `uni_student_admission` (`id`, `student_id`, `university_id`, `course_id`, `sem_yearly`, `fee`, `discount`, `is_current`, `created_at`) VALUES
+(4, 7, 1, 1, 1, 5000, 100, 1, '2021-04-11 07:38:21'),
+(5, 8, 1, 1, 1, 5000, 6600, 1, '2021-04-11 07:56:37'),
+(6, 9, 1, 1, 1, 5000, 200, 1, '2021-04-14 12:43:47'),
+(7, 10, 2, 2, 1, 200, 0, 0, '2021-04-17 09:36:14'),
+(8, 10, 2, 2, 2, 400, 50, 1, '2021-04-17 09:51:01');
 
 -- --------------------------------------------------------
 
@@ -881,6 +994,24 @@ ALTER TABLE `university_course_fees`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `uni_admission_fees`
+--
+ALTER TABLE `uni_admission_fees`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `uni_students`
+--
+ALTER TABLE `uni_students`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `uni_student_admission`
+--
+ALTER TABLE `uni_student_admission`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -948,7 +1079,7 @@ ALTER TABLE `expense`
 -- AUTO_INCREMENT for table `fee`
 --
 ALTER TABLE `fee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `income`
@@ -1014,7 +1145,25 @@ ALTER TABLE `university_course`
 -- AUTO_INCREMENT for table `university_course_fees`
 --
 ALTER TABLE `university_course_fees`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `uni_admission_fees`
+--
+ALTER TABLE `uni_admission_fees`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `uni_students`
+--
+ALTER TABLE `uni_students`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `uni_student_admission`
+--
+ALTER TABLE `uni_student_admission`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `users`
