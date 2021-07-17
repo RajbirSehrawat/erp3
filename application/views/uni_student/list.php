@@ -36,11 +36,12 @@ $this->load->view('common/leftmenu');
                                 <th>Sno.</th>
                                 <th>Enroll. No.</th>
                                 <th>Name</th>
-                                <th>Fname</th>
+                                <th>Fname</th>       
+                                <th>Course</th>   
+                                <th width="10%">DOB</th>
                                 <th>Mobile</th>
-                                <th>University</th>
-                                <th>Course</th>
-                                <th>Current Sem/Year</th>
+                                <th>WhatsApp</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -48,13 +49,16 @@ $this->load->view('common/leftmenu');
                             <?php $ii =1; foreach($all as $uni_student) { ?>
                                 <tr>
                                     <td><?php echo $ii; ?></td>
-                                    <td><?php echo $uni_student['enrollement']; ?></td>
+                                    <td><?php echo $uni_student['uni_enrollment']; ?></td>
                                     <td><?php echo $uni_student['sname']; ?></td>
                                     <td><?php echo $uni_student['fname']; ?></td>
+                            
+                                    <td><?php echo $uni_student['course_name']; ?> </td>
+                                    <td><?php echo $uni_student['dob']; ?></td>
                                     <td><?php echo $uni_student['mobile']; ?></td>
-                                    <td><?php echo $uni_student['university_name']; ?></td>
-                                    <td><?php echo $uni_student['course_name']; ?></td>
-                                    <td><?php echo $uni_student['sem_yearly']. " ".$uni_student['course_type']; ?></td>
+                                    <td><?php echo $uni_student['wmobile']; ?></td>
+                                    <td><?php echo $uni_student['admission_status']; ?></td>
+                                    
                                     <td class="center" style="width:20%;">
                                         <a href="<?php echo base_url(); ?>unistudents/edit/<?php echo $uni_student['enrollement']; ?>" class="label label-success label-sm">Edit</a>
                                         <a href="<?php echo base_url(); ?>unistudents/promote/<?php echo $uni_student['enrollement']; ?>" class="label label-primary label-sm">Promote</a>

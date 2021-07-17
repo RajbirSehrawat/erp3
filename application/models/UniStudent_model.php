@@ -32,6 +32,9 @@ class UniStudent_model extends CI_Model
             "fee" => $data["fee"],
             "discount" => $data["discount"],
             "education_type" => $data["education_type"],
+            "uni_enrollment" => $data["uni_enrollment"],
+            "session_start" => $data["session_start"],
+            "admission_status" => $data["admission_status"],
             "remark" => $data["remark"]
         ];
 
@@ -71,6 +74,9 @@ class UniStudent_model extends CI_Model
             "pincode" => $data["pincode"],
             "district" => $data["district"],
             "state" => $data["state"],
+            "uni_enrollment" => $data["uni_enrollment"],
+            "session_start" => $data["session_start"],
+            "admission_status" => $data["admission_status"],
             "remark" => $data["remark"]
         ];
 
@@ -200,19 +206,22 @@ class UniStudent_model extends CI_Model
         return 0;
 	}
 
-    public function fee_payment($admission_id, $amount=0, $remarks='')
+    public function fee_payment($admission_id, $amount, $remarks, $due_date, $payment_mode)
     {
         try{
             $data = [
                 "admission_id" => $admission_id,
                 "amount" => $amount,
                 "remarks" => $remarks,
+                'payment_mode'=> $payment_mode,
                 "created_at" => date("Y-m-d H:i:s")
             ];
 
             $this->db->insert('uni_admission_fees', $data);
             // echo $this->db->last_query(); exit;
             if ($this->db->trans_status()) {
+                $this->db->where('id', $admission_id);
+		        $this->db->update('uni_student_admission', ["next_due_date"=> $due_date]);
                 return true;
             }
             return false;  

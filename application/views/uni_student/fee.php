@@ -175,7 +175,30 @@
                                              	echo form_error('remark','<p class="text-danger">','</p>'); 
                                             } ?>
                                          </div>
-                                         </div> 
+                                         </div>
+                                         <div style="clear:both;"></div>
+                                         <div class="col-md-3">
+                                            <div class="form-group">
+                                            <label>Next Due Date</label>
+                                            <input type="text" class="form-control" name="due_date" id="join_date" value="<?php echo date('Y-m-d', strtotime('+1 month'));?>" />
+                                            <?php if(form_error('due_date')) { 
+                                                    echo form_error('due_date','<p class="text-danger">','</p>'); 
+                                                } ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                            <label>Payment Mode</label>
+                                            <select class="form-control" name="payment_mode">
+                                            <?php foreach($payment_mode as $paymode) { ?>
+                                                <option value="<?php echo $paymode; ?>"><?php echo $paymode; ?></option>
+                                            <?php } ?>
+                                            </select>
+                                            <?php if(form_error('payment_mode')) { 
+                                                    echo form_error('payment_mode','<p class="text-danger">','</p>'); 
+                                                } ?>
+                                            </div>
+                                        </div>
                                         
                                     <?php if(1) { ?>
                                        <div class="col-md-12">   
@@ -205,6 +228,8 @@
                                         <th>Sno.</th>
                                         <th>Sem/Year</th>
                                         <th>Amount</th>
+                                        <th>Pay Mode</th>
+                                        <th>Remarks</th>
                                         <th>Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -216,6 +241,8 @@
                                     	 <td><?php echo $ii;?></td>
  										<td class="center"><?php echo $fee['sem_yearly']. ' '.$uni_student['course_type'];?></td>
                                         <td><?php echo $fee['amount'];?></td>
+                                        <td><?php echo $fee['payment_mode'];?></td>
+                                        <td><?php echo $fee['remarks'];?></td>
                                         <td><?php echo $fee['created_at'];?></td>
  										<td class="center">
                                         	<a href="<?php echo base_url();?>unistudents/receipt/<?php echo $uni_student['enrollement'].'/'.$fee['id'];?>" target="_blank" class="label label-danger label-sm">Fee Slip</a> &nbsp; 

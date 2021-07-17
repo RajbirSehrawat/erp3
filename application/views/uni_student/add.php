@@ -83,7 +83,7 @@ $this->load->view('common/leftmenu');
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Dob (as per 10th)</label>
-                                    <input class="form-control" id="datepicker" readonly="" name="dob" value="<?php echo set_value('dob'); ?>">
+                                    <input type="text" placeholder="yyyy-mm-dd" class="form-control" id="datepicker" name="dob" value="<?php echo set_value('dob'); ?>" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
                                     <?php if (form_error('dob')) {
                                         echo form_error('dob', '<p class="text-danger">', '</p>');
                                     } ?>
@@ -208,7 +208,7 @@ $this->load->view('common/leftmenu');
                                 <div class="form-group">
                                     <label>Education Type</label>
                                     <select name="education_type" class="form-control">
-                                        <option value=""> Select Caste</option>
+                                        <option value=""> Select</option>
                                         <option value="1" <?php echo set_select('education_type', 1); ?>> Regular</option>
                                         <option value="2" <?php echo set_select('education_type', 2); ?>> Distance</option>
                                     </select>
@@ -217,6 +217,44 @@ $this->load->view('common/leftmenu');
                                     } ?>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>University Enrollment</label>
+                                    <input class="form-control" name="uni_enrollment" value="<?php echo set_value('uni_enrollment'); ?>">
+                                    <?php if (form_error('uni_enrollment')) {
+                                        echo form_error('uni_enrollment', '<p class="text-danger">', '</p>');
+                                    } ?>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                              
+                                    <label>Session</label><br/>
+                                    <input class="form-control" readonly="true" id="session_start" name="session_start" value="<?php echo set_value('session_start'); ?>">
+                                    
+                                    <?php if (form_error('session_start') ) {
+                                        echo form_error('session_start', '<p class="text-danger">', '</p>');
+                                    } 
+                                   
+                                    ?>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Admission Status</label>
+                                    <select name="admission_status" class="form-control" id='admission_status'>
+                                         <option value="">Select</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Success">Success</option>
+                                        <option value="Closed">Closed</option>
+                                    </select>
+                                    <?php if (form_error('admission_status')) {
+                                        echo form_error('admission_status', '<p class="text-danger">', '</p>');
+                                    } ?>
+                                </div>
+                            </div>
+                            <div style="clear:both;"></div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Remark</label>

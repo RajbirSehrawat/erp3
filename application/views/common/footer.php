@@ -44,6 +44,20 @@
       });
     });
 
+    $(function() {
+      $('#session_start').datepicker( {
+          changeMonth: true,
+          changeYear: true,
+          showButtonPanel: true,
+          dateFormat: 'M-yy',
+          onClose: function(dateText, inst) { 
+              $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+          }
+      });
+    });
+
+  
+
     function load_more(course_code) {
       $('#course_name').attr("readonly", true);
       $.ajax({

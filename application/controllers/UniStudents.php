@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class UniStudents extends CI_Controller
+class Unistudents extends CI_Controller
 {
 
     public function __construct()
@@ -231,7 +231,8 @@ class UniStudents extends CI_Controller
             redirect('unistudents');
         }
 
-        
+        $data['payment_mode'] = $this->config->item('payment_mode');
+
         if ($this->input->post('submit')) {
             if($this->input->post('fee_sem_year')){
                 $admission_id = $this->input->post('fee_sem_year');
@@ -242,13 +243,20 @@ class UniStudents extends CI_Controller
             }
             
             $this->form_validation->set_rules('fee_sem_year', 'Sem/Year', 'trim|required|is_natural');   
-            $this->form_validation->set_rules('amount', 'Fee Payment', 'trim|required|is_natural|less_than['.$pending_fee.']');
+            $this->form_validation->set_rules('amount', 'Fee Payment', 'trim|required|is_natural|greater_than[0]|less_than_equal_to['.$pending_fee.']');
             $this->form_validation->set_rules('remark', 'Remark', 'trim');
+            $this->form_validation->set_rules('payment_mode', 'Payment Mode', 'trim|required');
+            $this->form_validation->set_rules('due_date', 'Next Due Date', 'trim');
 
             if ($this->form_validation->run()) {
                 $remarks = $this->input->post('remark');
                 $amount = $this->input->post('amount');
-                $result = $this->UniStudent_model->fee_payment($admission_id, $amount, $remarks);
+                $due_date = $this->input->post('due_date');
+                $payment_mode = $this->input->post('payment_mode');
+                if(!empty($due_date)){
+                    $due_date = date('Y-m-d', strtotime($due_date));
+                }
+                $result = $this->UniStudent_model->fee_payment($admission_id, $amount, $remarks, $due_date, $payment_mode);
                 if ($result) {
                     $this->session->set_flashdata('success_msg', 'Fee payment done successfully');
                 } else {
